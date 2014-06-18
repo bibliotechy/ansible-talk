@@ -4,7 +4,7 @@
 	<head>
 		<meta charset="utf-8">
 
-		<title>reveal.js - The HTML Presentation Framework</title>
+		<title> Ansible at Lyrasis Digital </title>
 
 		<meta name="description" content="A framework for easily creating beautiful presentations using HTML">
 		<meta name="author" content="Hakim El Hattab">
@@ -37,7 +37,7 @@
 		<style type="text/css">
  		.reveal pre {
  			line-height: 1.4em;
- 			font-size: 18px;
+ 			font-size: 22px;
  		}
 		</style>
 
@@ -66,12 +66,20 @@
 					</section>
 					
 					<section>
-						<h3> Why DevOps? </h3>
+						<h3> Why Automate? </h3>
 						<div id="fragments">
 						    <p class="fragment"> Reusable </p>
+						    <p class="fragment"> Faster </p>
 						    <p class="fragment"> Auditable </p>
 						    <p class="fragment"> Documentation </p>
-
+						 <aside class="notes">
+						 	Reusable - Exmples from Lyrasis. Same "play" build Production, Preprod/User acceptance, Staging, and local dev 
+						 	in vagrant box. 
+						 	Faster - "It should take less time to rebuild aserver than to log in and fix it"
+						 	http://www.slideshare.net/geerlingguy/devops-for-humans-ansible-for-drupal-deployment-victory
+						 	It Does all of the Yak shaving for you, every time!
+						 	Auditable - lear tril of exactly what happened and when.
+						 </aside>
 					    </div>
 					</section>
 				</section>
@@ -82,8 +90,8 @@
 						<h2> Why Ansible? </h2>
 						<div id="fragments">
 						    <p class="fragment"> Simplicity </p>
-						    <p class="fragment"> Agentless </p>
 						    <p class="fragment"> Language Neutral </p>
+						    <p class="fragment"> Agentless </p>
 						    <p class="fragment"> Excellent Documentation </p>
 						    <p class="fragment"> Batteries Included </p>
 					    </div>
@@ -152,13 +160,6 @@
    roles:
      - ansible-oracle_java7-role
      - tomcat
-
- - name: Install Fedora
-   hosts: fedora
-   remote_user: conan_the_deployer
-   roles:
-     - fedora
-   
 						</pre>
 					</section>
 					<section>
@@ -177,6 +178,9 @@ solr.lyrasistechnology.org
 [tomcat:children] 
 fedora
 solr
+
+[all:vars]
+dev=True
 						</pre>
 					</section>
 					<!--section>
