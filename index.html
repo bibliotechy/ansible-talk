@@ -1,0 +1,308 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>reveal.js - The HTML Presentation Framework</title>
+
+		<meta name="description" content="A framework for easily creating beautiful presentations using HTML">
+		<meta name="author" content="Hakim El Hattab">
+
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<link rel="stylesheet" href="css/reveal.min.css">
+		<link rel="stylesheet" href="css/theme/default.css" id="theme">
+
+		<!-- For syntax highlighting -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- If the query includes 'print-pdf', include the PDF print sheet -->
+		<script>
+			if( window.location.search.match( /print-pdf/gi ) ) {
+				var link = document.createElement( 'link' );
+				link.rel = 'stylesheet';
+				link.type = 'text/css';
+				link.href = 'css/print/pdf.css';
+				document.getElementsByTagName( 'head' )[0].appendChild( link );
+			}
+		</script>
+
+		<!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+		<style type="text/css">
+ 		.reveal pre {
+ 			line-height: 1.4em;
+ 			font-size: 18px;
+ 		}
+		</style>
+
+	</head>
+
+	<body>
+
+		<div class="reveal">
+
+			<!-- Any section element inside of this container is displayed as a slide -->
+			<div class="slides">
+				<section>
+					<h1>Ansible</h1>
+					<h3></h3>
+					<p>
+						<small>Chad Nelson - Application Developer @ <a href="https://www.lyrasis.org/LYRASIS%20Digital/Pages/default.aspx">Lyrasis Digital</a>
+                        <br>
+						<a href="http://twitter.com/bibliotechy">@bibliotechy</a></small>
+				</section>
+
+				<section>
+				    <section>
+						<h2>What is Ansible?</h2>
+						<div id="fragments">
+							<p class="fragment" cite="http://www.ansible.com"> Tool for automating application configuration &amp; deployment </p>
+							<p class="fragment" cite="http://www.midwesternmac.com/blogs/jeff-geerling/devops-humans-ansible"> DevOps for Humans </p>
+						</div>
+					</section>
+					
+					<section>
+						<h3> Why DevOps? </h3>
+						<div id="fragments">
+						    <p class="fragment"> Reusable </p>
+						    <p class="fragment"> Auditable </p>
+						    <p class="fragment"> Documentation </p>
+
+					    </div>
+					</section>
+				</section>
+
+				<!-- Example of nested vertical slides -->
+				<section>
+					<section>
+						<h2> Why Ansible? </h2>
+						<div id="fragments">
+						    <p class="fragment"> Simplicity </p>
+						    <p class="fragment"> Agentless </p>
+						    <p class="fragment"> Language Neutral </p>
+						    <p class="fragment"> Excellent Documentation </p>
+						    <p class="fragment"> Batteries Included </p>
+					    </div>
+					</section>
+				</section>
+				<section>
+					<section>
+						<h2> Ansible by Example </h2>
+						<div>
+						    <p> Tasks </p>
+						    <p> Roles </p>
+						    <p> Plays </p>
+						    <p> Inventory </p>
+					    </div>
+					</section>
+
+					<section>
+					 	<h2> Tasks </h2>
+					 	<div id="fragments">
+       						<pre class="fragment">
+- name: Install php5 and drupal dependencies
+  apt: name={{ item }} state=present
+  with_items:
+    - php5
+    - php5-mysql
+    - libapache2-mod-php5
+  sudo: yes
+							</pre>
+							<pre class="fragment">
+- name: Enable the devel module when dev variable is True
+  shell: drush pm-enable devel
+  when: dev is True
+                            </pre>
+					</section>
+					<section>
+					 	<h2> Roles </h2>
+					 	<h3> Reusable group of tasks </h3>
+					<div id="fragments">
+						<p class="fragment"> Tasks </p>
+						<p class="fragment"> Templates </p>
+						<p class="fragment"> Defaults </p>
+					</div>	
+					</section>
+					<section>
+						<h2> Roles </h2>
+						<h3> Benefits </h3>
+						<div id="fragments">
+						<p class="fragment"> Reuse across projects </p>
+						<p class="fragment"> Share - <a href="https://galaxy.ansible.com/"> Ansible Galaxy</a> </p>
+						<p class="fragment"> Encapsulate </p>
+					</section>
+
+					<section>
+					 	<h2> Plays </h2>
+					 	<h3> Put your roles together in order</h3>
+						<pre>
+ - name: Install Drupal
+   hosts: webserver
+   remote_user: conan_the_deployer
+   roles:
+     - drupal
+
+ - name: Setup Tomcat where required
+   hosts: tomcat
+   remote_user: conan_the_deployer
+   roles:
+     - ansible-oracle_java7-role
+     - tomcat
+
+ - name: Install Fedora
+   hosts: fedora
+   remote_user: conan_the_deployer
+   roles:
+     - fedora
+   
+						</pre>
+					</section>
+					<section>
+					 	<h2> Inventory </h2>
+						<pre>
+[webserver] 
+web1.lyrasistechnology.org
+web2.lyrasistechnology.org
+
+[fedora] 
+fedora.lyrasistechnology.org
+
+[solr]  
+solr.lyrasistechnology.org
+
+[tomcat:children] 
+fedora
+solr
+						</pre>
+					</section>
+					<!--section>
+					 	<h2> Inventory - Vagrant</h2>
+						<pre>
+[fedora]
+10.11.12.13
+
+[solr] 
+10.11.12.13
+
+[webserver] # A single server can be in multiple groups
+10.11.12.13
+
+[tomcat:children] # Still nest groups the same way
+fedora
+solr
+						</pre>
+					</section-->
+					<section>
+						<h2> Variables </h2>
+						<div id="fragments">
+						<p class="fragment"> Group Variables </p>
+						<p class="fragment"> Host Variables </p>
+						<p class="fragment"> Defaults </p>
+					</div>	
+					</section>
+					<section>
+						<h2> Variables </h2>
+						<div id="fragments">
+						<pre class="fragment">
+ - name: apply firewall rules
+   ufw: rule=allow proto=tcp port={{ item.port }} 
+   src={{ item.source }} delete={{ item.remove }}
+   with_items: firewall							
+						</pre>
+						<div class="fragment">
+						<pre style="width:50%;float:left;">
+# group_vars/database
+
+firewall:
+  -
+    port: 22
+    source: any
+    remove: "no"
+  -
+    port: 3306
+    source: 10.0.0.0/8
+    remove: "no"							
+						</pre>
+						<pre style="width:50%;float:left;">
+# group_vars/tomcat
+
+  firewall:
+  -
+    port: 22
+    source: any
+    remove: "no"
+  -
+    port: 8080
+    source: 10.0.0.0/8
+    remove: "no"							
+						</pre>
+						</div>
+						</div>
+					</section>
+
+				</section>
+
+				<section>
+					<section>
+			
+						<h2>I ain't gonna lie...</h2>
+					</section>
+					<section>
+						<h2> Sometimes Ansible drives me crazy </h2>
+					</section>
+					<section>
+						<h2> SIMPLE</h2>
+					</section>
+				</section>
+				<section>
+				<h1> Thanks </h1>
+				<p>chad.nelson at lyrasis.org</p>
+				<p> <a href="http://twitter.com/bibliotechy">@bibliotechy</a> </p>
+				</section>
+
+
+			</div>
+
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.min.js"></script>
+
+		<script>
+
+			// Full list of configuration options available here:
+			// https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+				center: true,
+
+				theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+				transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/fade/none
+
+				// Parallax scrolling
+				// parallaxBackgroundImage: 'https://s3.amazonaws.com/hakim-static/reveal-js/reveal-parallax-1.jpg',
+				// parallaxBackgroundSize: '2100px 900px',
+
+				// Optional libraries used to extend on reveal.js
+				dependencies: [
+					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+					{ src: 'plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+				]
+			});
+
+		</script>
+
+	</body>
+</html>
